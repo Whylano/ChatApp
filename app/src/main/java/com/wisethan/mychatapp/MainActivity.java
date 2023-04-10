@@ -8,16 +8,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.wisethan.mychatapp.Fragments.ChatsFragment;
 import com.wisethan.mychatapp.Fragments.ProfileFragment;
 import com.wisethan.mychatapp.Fragments.UserFragment;
+import com.wisethan.mychatapp.model.Users;
 
 import java.util.ArrayList;
 
@@ -26,21 +35,29 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
-    //Toolbar toolbar;
-
+    Toolbar toolbar;
     CircleImageView imageView;
     TextView username;
+
+    DatabaseReference reference;
+
+    FirebaseUser firebaseUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //casting of the views
-        imageView = findViewById(R.id.profile_image);
+
         mAuth = FirebaseAuth.getInstance();
-        /*toolbar = findViewById(R.id.toolbarregis);
+
+        //casting of the views
+        imageView = findViewById(R.id.profile_image_toolbar);
+        username = findViewById(R.id.username_ontoolbar);
+
+        toolbar = findViewById(R.id.toolbarmain);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");*/
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TabLayout tabLayout = findViewById(R.id.tablayout);
@@ -54,6 +71,31 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Users users = snapshot.getValue(Users.class);
+
+                // set the text of the user on textview in toolbar
+                username.setText(users.getUsername());
+
+                if (users.getImageURL().equals("default")) {
+                    imageView.setImageResource(R.drawable.user);
+                } else {
+                    Glide.with(getApplicationContext()).load(users.getImageURL()).into(imageView);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

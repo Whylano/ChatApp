@@ -5,14 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <TextView
-        android:id="@+id/toolbarlogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:gravity="center"
-        android:text="LOGIN"
-        android:textSize="30dp" />
+    <include layout="@layout/barlayout"
+        android:id="@+id/toolbarlogin"/>
 
 
 

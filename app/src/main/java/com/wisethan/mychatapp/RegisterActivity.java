@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,7 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     Button registerbtn;
 
-    //Toolbar toolbar =(Toolbar)findViewById(R.id.toolbarregis);
+    Toolbar toolbar;
 
     String username, email, password;
 
@@ -40,10 +41,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        /*toolbar = findViewById(R.id.toolbarregis);
+        toolbar = findViewById(R.id.toolbarregis);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Register");*/
-
+        getSupportActionBar().setTitle("Register");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -81,14 +81,17 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+
                 if (task.isSuccessful()) {
                     FirebaseUser user = mAuth.getCurrentUser();
                     reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+
                     if (user != null) {
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("username", username);
                         hashMap.put("email", email);
                         hashMap.put("id", user.getUid());
+                        hashMap.put("imageURL", "default");
 
                         reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
