@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "730152969980",
+    "firebase_url": "https://mychatapp-ef293-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "mychatapp-ef293",
+    "storage_bucket": "mychatapp-ef293.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730152969980:android:e7d62aca662f97aadbd979",
+        "android_client_info": {
+          "package_name": "com.example.mychatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730152969980-d7sbg62n2s2glk11t9grqa8fuji8a5hn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mychatapp",
+            "certificate_hash": "b5b9076dd1605750ac6c47d578ebf423c0140060"
+          }
+        },
+        {
+          "client_id": "730152969980-lppjaok93ssch7cvggcmrke9m1hbuoph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvammipBDMeXE31JPjJnItLp7ABegDrGE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "730152969980-lppjaok93ssch7cvggcmrke9m1hbuoph.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730152969980:android:55d3ba6c3b9b9c66dbd979",
+        "android_client_info": {
+          "package_name": "com.wisethan.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730152969980-3ciks9of87cber43p5rr1ddu6m4bu5jr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wisethan.myapplication",
+            "certificate_hash": "b5b9076dd1605750ac6c47d578ebf423c0140060"
+          }
+        },
+        {
+          "client_id": "730152969980-lppjaok93ssch7cvggcmrke9m1hbuoph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvammipBDMeXE31JPjJnItLp7ABegDrGE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "730152969980-lppjaok93ssch7cvggcmrke9m1hbuoph.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730152969980:android:ab176c7a22805fc4dbd979",
+        "android_client_info": {
+          "package_name": "com.wisethan.mychatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730152969980-j91bdoj7dus8dnb3jlclnrvnpgddm913.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wisethan.mychatapp",
+            "certificate_hash": "b5b9076dd1605750ac6c47d578ebf423c0140060"
+          }
+        },
+        {
+          "client_id": "730152969980-lppjaok93ssch7cvggcmrke9m1hbuoph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvammipBDMeXE31JPjJnItLp7ABegDrGE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "730152969980-lppjaok93ssch7cvggcmrke9m1hbuoph.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
