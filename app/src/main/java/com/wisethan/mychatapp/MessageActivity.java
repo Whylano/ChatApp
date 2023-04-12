@@ -41,6 +41,8 @@ public class MessageActivity extends AppCompatActivity {
 
     FirebaseUser firebaseUser;
 
+    DatabaseReference reference;
+
     EditText et_message;
 
     MessageAdapter messageAdapter;
@@ -52,6 +54,8 @@ public class MessageActivity extends AppCompatActivity {
     MessageActivity messageActivity;
 
     RecyclerView recyclerView;
+
+    ValueEventListener seenlistener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +110,9 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+
+        seenMessage(friendid);
+
         et_message.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int i, int i1, int i2) {
@@ -139,6 +146,30 @@ public class MessageActivity extends AppCompatActivity {
                 sendMessage(myid, friendid, message);
 
                 et_message.setText("");
+
+            }
+        });
+    }
+
+    private void seenMessage(String friendid) {
+
+        reference = FirebaseDatabase.getInstance().getReference("Chats");
+
+        seenlistener = reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Chats chats = ds.getValue(Chats.class);
+                    if (chats.getReciever().equals(myid) && chats.getSender().equals(friendid)) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("isseen", true);
+                        ds.getRef().updateChildren(hashMap);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -179,6 +210,7 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("sender", myid);
         hashMap.put("reciever", friendid);
         hashMap.put("message", message);
+        hashMap.put("isseen", false);
 
         reference.child("Chats").push().setValue(hashMap);
 
@@ -187,7 +219,6 @@ public class MessageActivity extends AppCompatActivity {
         reference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
 
                 if (!snapshot.exists()) {
                     reference1.child("id").setValue(friendid);
@@ -204,11 +235,11 @@ public class MessageActivity extends AppCompatActivity {
     private void Status(final String status) {
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("status", status);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", status);
 
-                reference.updateChildren(hashMap);
-            }
+        reference.updateChildren(hashMap);
+    }
 
 
     @Override
@@ -221,6 +252,7 @@ public class MessageActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Status("offline");
+        reference.removeEventListener(seenlistener);
     }
 }
 

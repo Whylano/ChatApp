@@ -12,8 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.wisethan.mychatapp.MessageActivity;
 import com.wisethan.mychatapp.R;
+import com.wisethan.mychatapp.model.Chats;
 import com.wisethan.mychatapp.model.Users;
 
 import java.util.List;
@@ -27,6 +35,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
     boolean isChat;
 
     String friendid;
+    String thelastmessage;
+
+    FirebaseUser firebaseUser;
 
     public UserAdapter(Context context, List<Users> userlist, boolean isChat) {
         this.context = context;
@@ -62,9 +73,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
                 holder.image_on.setVisibility(View.GONE);
                 holder.image_off.setVisibility(View.VISIBLE);
             }
-        }else {
+        } else {
             holder.image_on.setVisibility(View.GONE);
             holder.image_off.setVisibility(View.GONE);
+        }
+        if (isChat) {
+            LastMessage(user.getId(), holder.last_msg);
+        } else {
+            holder.last_msg.setVisibility(View.GONE);
         }
     }
 
@@ -75,7 +91,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView username;
+        TextView username, last_msg;
         CircleImageView imageView, image_on, image_off;
 
         public MyHolder(@NonNull View itemView) {
@@ -85,6 +101,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
             imageView = itemView.findViewById(R.id.image_user_userfrag);
             image_on = itemView.findViewById(R.id.image_online);
             image_off = itemView.findViewById(R.id.image_offline);
+            last_msg = itemView.findViewById(R.id.lastMessage);
             itemView.setOnClickListener(this);
 
         }
@@ -100,5 +117,44 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
             Toast.makeText(context, "friends" + friendid, Toast.LENGTH_SHORT).show();
             context.startActivity(intent);
         }
+    }
+
+    private void LastMessage(String friendid, TextView last_msg) {
+        thelastmessage = "default";
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Chats chats = ds.getValue(Chats.class);
+
+                    if (firebaseUser != null && chats != null) {
+                        if (chats.getSender().equals(friendid) && chats.getReciever().equals(firebaseUser.getUid()) ||
+                                chats.getSender().equals(friendid) && chats.getReciever().equals(friendid)) {
+                            thelastmessage = chats.getMessage();
+                        }
+                    }
+                }
+                switch (thelastmessage) {
+                    case "default":
+                        last_msg.setText("No message");
+                        break;
+                    default:
+                        last_msg.setText(thelastmessage);
+                }
+                thelastmessage = "default";
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

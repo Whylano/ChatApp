@@ -1,6 +1,7 @@
 package com.wisethan.mychatapp.Fragments;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class ChatsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chatslist")
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chatslists")
                 .child(firebaseUser.getUid());
 
         reference.addValueEventListener(new ValueEventListener() {
