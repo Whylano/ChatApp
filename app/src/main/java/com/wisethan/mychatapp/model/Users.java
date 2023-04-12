@@ -2,12 +2,13 @@ package com.wisethan.mychatapp.model;
 
 public class Users {
 
-    String username, imageURL, id;
+    String username, imageURL, id, status;
 
-    public Users(String username, String imageURL, String id) {
+    public Users(String username, String imageURL, String id, String status) {
         this.username = username;
         this.imageURL = imageURL;
         this.id = id;
+        this.status = status;
     }
 
     public Users() {
@@ -35,5 +36,13 @@ public class Users {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

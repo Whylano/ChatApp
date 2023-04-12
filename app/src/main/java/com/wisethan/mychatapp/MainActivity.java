@@ -29,6 +29,7 @@ import com.wisethan.mychatapp.Fragments.UserFragment;
 import com.wisethan.mychatapp.model.Users;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -148,12 +150,28 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        return false;
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void Status(final String status) {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", status);
+
+        reference.updateChildren(hashMap);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Status("online");
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finishAffinity();
+    protected void onPause() {
+        super.onPause();
+        Status("offline");
     }
 }
