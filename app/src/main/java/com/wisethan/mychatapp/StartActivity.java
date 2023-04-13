@@ -12,10 +12,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class StartActivity extends AppCompatActivity {
 
-    Button login, register;
-
+    Button login, register, notification;
     FirebaseUser user;
-
 
 
     @Override
@@ -27,6 +25,7 @@ public class StartActivity extends AppCompatActivity {
 
         login = findViewById(R.id.loginBtn);
         register = findViewById(R.id.registerbtn);
+        notification = findViewById(R.id.notification);
 
         //redirecting to respective activity
         login.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +38,12 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(StartActivity.this, RegisterActivity.class));
+            }
+        });
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(StartActivity.this, NotificationActivity.class));
             }
         });
     }
